@@ -3,11 +3,13 @@
 #define MAXCITY 30
 
 char cities[MAXCITY][50];
+int distance[MAXCITY][MAXCITY];
 int citycount=0;
 
 void addCity();
 void removeCity();
 void displayCities();
+void distanceInput();
 
 
 int main()
@@ -15,6 +17,7 @@ int main()
 
     addCity();
     removeCity();
+    void distanceInput();
     return 0;
 }
 void addCity(){
@@ -70,4 +73,25 @@ void displayCities(){
     for(int i=0;i<citycount;i++){
         printf("%d\t\t%s\n",i,cities[i]);
     }
+}
+void distanceInput(){
+    int start,stop,dist;
+    displayCities(cities,&citycount);
+    if(citycount<2){
+        printf("add at least two cities\n");
+        return;
+    }
+    printf("Enter start city index:");
+    scanf("%d",&start);
+    printf("Enter destination index: ");
+    scanf("%d",&stop);
+    if(start==stop){
+        printf("Distance=0");
+        distance[start][stop]=distance[stop][start]=0;
+        return;
+
+    }
+    printf("Enter distance between %s-%s :",cities[start],cities[stop]);
+    scanf("%d",&dist);
+    distance[start][stop]=distance[stop][start]=dist;
 }
