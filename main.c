@@ -1,16 +1,23 @@
 #include <stdio.h>
 #include <string.h>
 #define MAXCITY 30
+#define FUELPRICE 310
+#define MAXDELIVERY 50
 
 char cities[MAXCITY][50];
 int distance[MAXCITY][MAXCITY];
 int citycount=0;
+char vehicleNames[3][10] = {"Van", "Truck", "Lorry"};
+int deliveryCount=0;
+int sourcedel[MAXDELIVERY],destinationdel[MAXDELIVERY],weightdel[MAXDELIVERY],vehicleTypedel[MAXDELIVERY];
+float deliveryCostdel[MAXDELIVERY], fuelUseddel[MAXDELIVERY],fuelCostdel[MAXDELIVERY],totalCostdel[MAXDELIVERY],profitdel[MAXDELIVERY],customerChargedel[MAXDELIVERY],timedel[MAXDELIVERY] ;
 
 void addCity();
 void removeCity();
 void displayCities();
 void distanceInput();
 void displayDistance();
+void DeliveryRequestHandling();
 
 
 int main()
@@ -20,6 +27,7 @@ int main()
     removeCity();
     displayDistance();
     distanceInput();
+    DeliveryRequestHandling();
     return 0;
 }
 void addCity(){
@@ -116,3 +124,68 @@ void displayDistance(){
     }
 
 }
+void DeliveryRequestHandling(){
+    int source,destination,weight,vehicletype;
+    displayCities(cities,citycount);
+    printf("Enter source city index:");
+    scanf("%d",&source);
+    printf("Enter destination city index:");
+    scanf("%d",&destination);
+
+    if(source == destination){
+        printf("source city and destination city should be defferent");
+        return;
+    }
+    printf("Enter weight(in kg):");
+    scanf("%d",&weight);
+    printf("1=Van\n2=Truck\n3=Lorry\n");
+    printf("Enter vehicle type(NO):");
+    scanf("%d",&vehicletype);
+
+    int rateperkm[]={30,40,80};
+    int capacity[]={1000,5000,10000};
+    int avgspeed[]={60,50,45};
+    int fuelefficiency[]={12,6,4};
+
+    if(weight>capacity[vehicletype-1]){
+        printf("Weight exceed vehicle maximum capacity");
+        return;
+    }
+    float d=(float)distance[source][destination];
+    float deliverycost=d*rateperkm[vehicletype-1]*(1+weight*(1.0/10000.0));
+    float speed=(float)avgspeed[vehicletype-1];
+    float deliverytime=deliverycost/speed;
+    float fuelused=d/(float)fuelefficiency[vehicletype-1];
+    float fuelcost=fuelused*FUELPRICE;
+    float totalcost=deliverycost+fuelcost;
+    float profit=totalcost*0.25;
+    float finalcharge=totalcost+profit;
+
+    sourcedel[deliveryCount] = source;
+    destinationdel[deliveryCount] =destination;
+    weightdel[deliveryCount] = weight;
+    vehicleTypedel[deliveryCount] = vehicletype;
+    deliveryCostdel[deliveryCount] = deliverycost;
+    fuelUseddel[deliveryCount] = fuelused;
+    fuelCostdel[deliveryCount] = fuelcost;
+    totalCostdel[deliveryCount] = totalcost;
+    profitdel[deliveryCount] = profit;
+    customerChargedel[deliveryCount] = finalcharge;
+    timedel[deliveryCount] = deliverytime;
+
+
+    printf("\n====Dilvery Cost Estimation====\n");
+    printf("From:%s\nTo:%s\nVehicle:%s\nWeight:%.2f kg\n",cities[sourcedel[deliveryCount]],cities[destinationdel[deliveryCount]],vehicleNames[vehicleTypedel[deliveryCount]],weightdel[deliveryCount]);
+    printf("Delivery Cost:%.2f\n",deliveryCostdel[deliveryCount]);
+    printf("Fuel Used:%.2f\n",fuelUseddel[deliveryCount]);
+    printf("Fuel Cost:%.2f\n",fuelCostdel[deliveryCount]);
+    printf("Total cost:%.2f\n",totalCostdel[deliveryCount]);
+    printf("Profit:%.2f\n",profitdel[deliveryCount]);
+    printf("Customer Charge:%.2f\n",customerChargedel[deliveryCount]);
+    printf("Estimated Time:%.2f\n",timedel[deliveryCount]);
+    printf("===============================================\n");
+
+    deliveryCount++;
+
+}
+
