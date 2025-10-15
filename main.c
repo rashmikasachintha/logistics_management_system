@@ -10,6 +10,7 @@ void addCity();
 void removeCity();
 void displayCities();
 void distanceInput();
+void displayDistance();
 
 
 int main()
@@ -17,7 +18,8 @@ int main()
 
     addCity();
     removeCity();
-    void distanceInput();
+    displayDistance();
+    distanceInput();
     return 0;
 }
 void addCity(){
@@ -94,4 +96,23 @@ void distanceInput(){
     printf("Enter distance between %s-%s :",cities[start],cities[stop]);
     scanf("%d",&dist);
     distance[start][stop]=distance[stop][start]=dist;
+}
+void displayDistance(){
+    printf("\n--Distance Table--\n");
+    printf("\t");
+    for(int i=0;i<citycount;i++){
+        printf("%s\t",cities[i]);
+    }
+    printf("\n");
+
+    for(int i=0;i<citycount;i++){
+        printf("%s\t",cities[i]);
+        {
+            for(int k=0;k<citycount;k++){
+                printf("%d\t",distance[i][k]);
+            }
+            printf("\n");
+        }
+    }
+
 }
