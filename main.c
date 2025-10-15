@@ -14,6 +14,7 @@ float deliveryCostdel[MAXDELIVERY], fuelUseddel[MAXDELIVERY],fuelCostdel[MAXDELI
 
 void addCity();
 void removeCity();
+void renameCity();
 void displayCities();
 void distanceInput();
 void displayDistance();
@@ -25,6 +26,7 @@ int main()
 
     addCity();
     removeCity();
+    renameCity();
     displayDistance();
     distanceInput();
     DeliveryRequestHandling();
@@ -77,6 +79,22 @@ void removeCity() {
     (citycount)--;
     printf("City removed successfully.\n");
 }
+void renameCity() {
+    int index;
+    char newName[50];
+    displayCities();
+    printf("Enter index of city to rename: ");
+    scanf("%d", &index);
+    if (index < 0 || index >= citycount) {
+        printf("Invalid index.\n");
+        return;
+    }
+    printf("Enter new name: ");
+    scanf("%s", newName);
+    strcpy(cities[index], newName);
+    printf("City renamed successfully.\n");
+}
+
 void displayCities(){
     printf("INDEX\t\tCITY\n");
     printf("-------------------\n");
