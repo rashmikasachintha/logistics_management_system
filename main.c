@@ -9,8 +9,12 @@ int distance[MAXCITY][MAXCITY];
 int citycount=0;
 char vehicleNames[3][10] = {"Van", "Truck", "Lorry"};
 int deliveryCount=0;
+int bestPath[MAXCITY], tempPath[MAXCITY], visited[MAXCITY];
+int minDistance;
+
 int sourcedel[MAXDELIVERY],destinationdel[MAXDELIVERY],weightdel[MAXDELIVERY],vehicleTypedel[MAXDELIVERY];
 float deliveryCostdel[MAXDELIVERY], fuelUseddel[MAXDELIVERY],fuelCostdel[MAXDELIVERY],totalCostdel[MAXDELIVERY],profitdel[MAXDELIVERY],customerChargedel[MAXDELIVERY],timedel[MAXDELIVERY] ;
+int source,destination,weight,vehicletype;
 
 void addCity();
 void removeCity();
@@ -19,6 +23,7 @@ void displayCities();
 void distanceInput();
 void displayDistance();
 void DeliveryRequestHandling();
+void permute(int depth, int currentCity, int destination, int totalDistance, int source);
 
 
 int main()
@@ -30,6 +35,8 @@ int main()
     displayDistance();
     distanceInput();
     DeliveryRequestHandling();
+
+
     return 0;
 }
 void addCity(){
@@ -104,7 +111,7 @@ void displayCities(){
 }
 void distanceInput(){
     int start,stop,dist;
-    displayCities(cities,&citycount);
+    displayCities();
     if(citycount<2){
         printf("add at least two cities\n");
         return;
@@ -143,8 +150,8 @@ void displayDistance(){
 
 }
 void DeliveryRequestHandling(){
-    int source,destination,weight,vehicletype;
-    displayCities(cities,citycount);
+
+    displayCities();
     printf("Enter source city index:");
     scanf("%d",&source);
     printf("Enter destination city index:");
@@ -172,7 +179,7 @@ void DeliveryRequestHandling(){
     float d=(float)distance[source][destination];
     float deliverycost=d*rateperkm[vehicletype-1]*(1+weight*(1.0/10000.0));
     float speed=(float)avgspeed[vehicletype-1];
-    float deliverytime=deliverycost/speed;
+    float deliverytime=d/speed;
     float fuelused=d/(float)fuelefficiency[vehicletype-1];
     float fuelcost=fuelused*FUELPRICE;
     float totalcost=deliverycost+fuelcost;
@@ -206,4 +213,23 @@ void DeliveryRequestHandling(){
     deliveryCount++;
 
 }
+void permute(int depth, int currentCity, int destination, int totalDistance, int source) {
+    if (depth == 3 || currentCity == destination) {
+        totalDistance += distance[currentCity][destination];
+        if (totalDistance < minDistance) {
+            minDistance = totalDistance;
+            memcpy(bestPath, tempPath, sizeof(int) * depth);
+            bestPath[depth] = destination;
+        }
+        return;
+    }
 
+    for (int i = 0; i < citycount; i++) {
+        if (!visited[i] && i != source && i != destination && distance[currentCity][i] > 0) {
+            visited[i] = 1;
+            tempPath[depth] = i;
+            permute(depth + 1, i, destination, totalDistance + distance[currentCity][i], source);
+            visited[i] = 0;
+        }
+    }
+}
