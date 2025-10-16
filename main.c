@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
 #define MAXCITY 30
 #define FUELPRICE 310
 #define MAXDELIVERY 50
@@ -24,6 +25,7 @@ void distanceInput();
 void displayDistance();
 void DeliveryRequestHandling();
 void permute(int depth, int currentCity, int destination, int totalDistance, int source);
+void findLeastCostRoute(int source, int destination);
 
 
 int main()
@@ -35,6 +37,7 @@ int main()
     displayDistance();
     distanceInput();
     DeliveryRequestHandling();
+    findLeastCostRoute(source,destination);
 
 
     return 0;
@@ -232,4 +235,40 @@ void permute(int depth, int currentCity, int destination, int totalDistance, int
             visited[i] = 0;
         }
     }
+}
+void findLeastCostRoute(int source, int destination){
+
+    if (source == destination) {
+        printf("Source and destination must be different.\n");
+        return;
+    if (source < 0 || source >= citycount || destination < 0 || destination >= citycount) {
+    printf("Invalid city index.\n");
+    return;
+}
+
+    }
+
+    minDistance = INT_MAX;
+    memset(visited, 0, sizeof(visited));
+    memset(tempPath, -1, sizeof(tempPath));
+    memset(bestPath, -1, sizeof(bestPath));
+
+    visited[source] = 1;
+    permute(0, source, destination, 0, source);
+
+    if (minDistance == INT_MAX) {
+        printf("No valid route found.\n");
+        return;
+    }
+
+    printf("\n--- Least-Cost Route ---\n");
+    printf("From: %s\n", cities[source]);
+    printf("To: %s\n", cities[destination]);
+    printf("Route: %s", cities[source]);
+    for (int i = 0; i < 4 && bestPath[i] != -1; i++) {
+        printf(" -> %s ", cities[bestPath[i]]);
+    }
+    printf("\n");
+    printf("Minimum Distance: %d km\n", minDistance);
+    printf("-------------------------\n");
 }
