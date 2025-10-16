@@ -26,6 +26,7 @@ void displayDistance();
 void DeliveryRequestHandling();
 void permute(int depth, int currentCity, int destination, int totalDistance, int source);
 void findLeastCostRoute(int source, int destination);
+void deliveryReports();
 
 
 int main()
@@ -37,7 +38,8 @@ int main()
     displayDistance();
     distanceInput();
     DeliveryRequestHandling();
-    findLeastCostRoute(source,destination);
+
+    deliveryReports();
 
 
     return 0;
@@ -241,12 +243,13 @@ void findLeastCostRoute(int source, int destination){
     if (source == destination) {
         printf("Source and destination must be different.\n");
         return;
+    }
     if (source < 0 || source >= citycount || destination < 0 || destination >= citycount) {
     printf("Invalid city index.\n");
     return;
 }
 
-    }
+
 
     minDistance = INT_MAX;
     memset(visited, 0, sizeof(visited));
@@ -272,3 +275,30 @@ void findLeastCostRoute(int source, int destination){
     printf("Minimum Distance: %d km\n", minDistance);
     printf("-------------------------\n");
 }
+void deliveryReports() {
+    float totalDistance = 0, totalTime = 0, totalRevenue = 0, totalProfit = 0;
+    int longest = 0, shortest = INT_MAX;
+
+    for (int i = 0; i < deliveryCount; i++) {
+        int d = distance[sourcedel[i]][destinationdel[i]];
+        totalDistance += d;
+        totalTime += timedel[i];
+        totalRevenue += customerChargedel[i];
+        totalProfit += profitdel[i];
+        if (d > longest) longest = d;
+        if (d < shortest) shortest = d;
+    }
+
+    printf("\n--- Performance Report ---\n");
+    printf("Total Deliveries Completed: %d\n", deliveryCount);
+    printf("Total Distance Covered: %.2f km\n", totalDistance);
+    printf("Average Delivery Time: %.2f hours\n", deliveryCount ? totalTime / deliveryCount : 0);
+    printf("Total Revenue: %.2f LKR\n", totalRevenue);
+    printf("Total Profit: %.2f LKR\n", totalProfit);
+    printf("Longest Route: %d km\n", longest);
+    printf("Shortest Route: %d km\n", shortest);
+    printf("---------------------------\n");
+}
+
+
+
