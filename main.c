@@ -29,17 +29,69 @@ void findLeastCostRoute(int source, int destination);
 void deliveryReports();
 
 
-int main()
-{
+int main(){
 
-    addCity();
-    removeCity();
-    renameCity();
-    displayDistance();
-    distanceInput();
-    DeliveryRequestHandling();
+    int choice;
+do {
+    printf("\n----Logistics Management System----\n");
+    printf("1. Add City\n");
+    printf("2. Remove City\n");
+    printf("3. Rename City\n");
+    printf("4. Distance Input\n");
+    printf("5. Show Distance Table\n");
+    printf("6. Enter Delivery Details\n");
+    printf("7. Find Least-Cost Route\n");
+    printf("8. View Delivery Reports\n");
+    printf("0. Exit\n");
+    printf("Enter choice: ");
+    scanf("%d", &choice);
 
-    deliveryReports();
+
+    switch(choice) {
+        case 1:
+             addCity();
+             break;
+        case 2:
+             removeCity();
+             break;
+        case 3:
+            renameCity();
+            break;
+        case 4:
+             distanceInput();
+             break;
+        case 5:
+             displayDistance();
+             break;
+        case 6:
+             DeliveryRequestHandling();
+             break;
+        case 7:{
+            int src, dest;
+            displayCities();
+            printf("Enter source city index: ");
+            scanf("%d", &src);
+            printf("Enter destination city index: ");
+            scanf("%d", &dest);
+            findLeastCostRoute(src, dest);
+            break;
+           }
+
+        case 8:
+             deliveryReports();
+             break;
+
+        case 0:
+            printf("Exiting...\n");
+            break;
+         default:
+            printf("Invalid choice.\n");
+
+}
+} while (choice != 0);
+
+
+
 
 
     return 0;
