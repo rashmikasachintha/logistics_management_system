@@ -28,6 +28,7 @@ void permute(int depth, int currentCity, int destination, int totalDistance, int
 void findLeastCostRoute(int source, int destination);
 void deliveryReports();
 void saveDistanceDataToTxtFile();
+void saveDeliveryDataToTxtFile();
 
 
 int main(){
@@ -84,6 +85,7 @@ do {
 
         case 0:
             saveDistanceDataToTxtFile();
+            saveDeliveryDataToTxtFile();
             printf("Exiting...\n");
             break;
          default:
@@ -381,5 +383,34 @@ void saveDistanceDataToTxtFile() {
 
     fclose(froute);
 }
+void saveDeliveryDataToTxtFile() {
+    FILE *fdel = fopen("deliveries.txt", "w");
+    if (fdel == NULL) {
+        printf("Cannot create file!\n");
+        return;
+    }
+
+    fprintf(fdel, "Delivery Count: %d\n\n", deliveryCount);
+
+
+    fprintf(fdel, "%-4s %-12s %-12s %-8s %-8s %-12s %-12s %-12s %-14s %-12s %-16s %-12s\n",
+            "No", "Source", "Destination", "Weight", "Vehicle", "BaseCost", "FuelUsed",
+            "FuelCost", "OperationalCost", "Profit", "CustomerCharge", "Time(hrs)");
+
+
+    for (int i = 0; i < deliveryCount; i++) {
+        fprintf(fdel, "%-4d %-12s %-12s %-8d %-8s %-12.2f %-12.2f %-12.2f %-14.2f %-12.2f %-16.2f %-12.2f\n",
+                i + 1,cities[sourcedel[i]],cities[destinationdel[i]],weightdel[i],
+                vehicleTypedel[i] == 1 ? "Van" :
+                vehicleTypedel[i] == 2 ? "Truck" : "Lorry",
+                deliveryCostdel[i],fuelUseddel[i],fuelCostdel[i],totalCostdel[i], profitdel[i],customerChargedel[i],timedel[i]);
+
+    }
+
+    fclose(fdel);
+}
+
+
+
 
 

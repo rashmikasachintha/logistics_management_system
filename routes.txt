@@ -1,6 +1,4 @@
-City count: 3
+City count: 1
 
-            gampaha     minuwangoda matara      
-gampaha     0           10          100         
-minuwangoda 10          0           120         
-matara      100         120         0           
+            ww          
+ww          0           

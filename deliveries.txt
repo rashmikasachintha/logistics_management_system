@@ -1,0 +1,3 @@
+Delivery Count: 0
+
+No   Source       Destination  Weight   Vehicle  BaseCost     FuelUsed     FuelCost     OperationalCost Profit       CustomerCharge   Time(hrs)   
