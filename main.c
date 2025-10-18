@@ -27,6 +27,7 @@ void DeliveryRequestHandling();
 void permute(int depth, int currentCity, int destination, int totalDistance, int source);
 void findLeastCostRoute(int source, int destination);
 void deliveryReports();
+void saveDistanceDataToTxtFile();
 
 
 int main(){
@@ -82,6 +83,7 @@ do {
              break;
 
         case 0:
+            saveDistanceDataToTxtFile();
             printf("Exiting...\n");
             break;
          default:
@@ -351,6 +353,33 @@ void deliveryReports() {
     printf("Shortest Route: %d km\n", shortest);
     printf("---------------------------\n");
 }
+void saveDistanceDataToTxtFile() {
+    FILE *froute = fopen("routes.txt", "w");
+    if (froute == NULL) {
+        printf("Cannot create file!\n");
+        return;
+    }
 
+
+    fprintf(froute, "City count: %d\n\n", citycount);
+
+
+    fprintf(froute, "%-12s", "");
+    for (int i = 0; i < citycount; i++) {
+        fprintf(froute, "%-12s", cities[i]);
+    }
+    fprintf(froute, "\n");
+
+
+    for (int i = 0; i < citycount; i++) {
+        fprintf(froute, "%-12s", cities[i]);
+        for (int j = 0; j < citycount; j++) {
+            fprintf(froute, "%-12d", distance[i][j]);
+        }
+        fprintf(froute, "\n");
+    }
+
+    fclose(froute);
+}
 
 
