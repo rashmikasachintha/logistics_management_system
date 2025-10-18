@@ -29,9 +29,11 @@ void findLeastCostRoute(int source, int destination);
 void deliveryReports();
 void saveDistanceDataToTxtFile();
 void saveDeliveryDataToTxtFile();
+void loadDistanceDataFromTxtFile();
 
 
 int main(){
+    loadDistanceDataFromTxtFile();
 
     int choice;
 do {
@@ -409,8 +411,28 @@ void saveDeliveryDataToTxtFile() {
 
     fclose(fdel);
 }
+void loadDistanceDataFromTxtFile() {
+    FILE *froute = fopen("routes.txt", "r");
+    if (froute == NULL) {
+        printf("routes.txt not found. Starting fresh.\n");
+        return;
+    }
+
+    fscanf(froute, "City count: %d\n\n", &citycount);
 
 
+    char temp[100];
+    for (int i = 0; i < citycount + 1; i++) {
+        fscanf(froute, "%s", temp);
+    }
 
 
+    for (int i = 0; i < citycount; i++) {
+        fscanf(froute, "%s", cities[i]);
+        for (int j = 0; j < citycount; j++) {
+            fscanf(froute, "%d", &distance[i][j]);
+        }
+    }
 
+    fclose(froute);
+}
