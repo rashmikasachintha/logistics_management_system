@@ -174,27 +174,32 @@ void displayCities(){
         printf("%d\t\t%s\n",i,cities[i]);
     }
 }
-void distanceInput(){
-    int start,stop,dist;
-    displayCities();
-    if(citycount<2){
-        printf("add at least two cities\n");
+void distanceInput() {
+    if (citycount < 2) {
+        printf("Please add at least two cities.\n");
         return;
     }
-    printf("Enter start city index:");
-    scanf("%d",&start);
-    printf("Enter destination index: ");
-    scanf("%d",&stop);
-    if(start==stop){
-        printf("Distance=0");
-        distance[start][stop]=distance[stop][start]=0;
-        return;
 
+    printf("\n--- Enter distances between cities ---\n");
+    for (int i = 0; i < citycount; i++) {
+        for (int j = i + 1; j < citycount; j++) {
+            int dist;
+            printf("Distance between %s and %s: ", cities[i], cities[j]);
+            scanf("%d", &dist);
+
+
+            distance[i][j] = distance[j][i] = dist;
+        }
     }
-    printf("Enter distance between %s-%s :",cities[start],cities[stop]);
-    scanf("%d",&dist);
-    distance[start][stop]=distance[stop][start]=dist;
+
+
+    for (int i = 0; i < citycount; i++) {
+        distance[i][i] = 0;
+    }
+
+    printf("\n Distances recorded successfully.\n");
 }
+
 void displayDistance(){
     printf("\n--Distance Table--\n");
     printf("\t");

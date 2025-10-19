@@ -1,6 +1,6 @@
 City count: 3
 
-            gampaha     minuwangoda matara      
-gampaha     0           0           0           
-minuwangoda 0           0           0           
-matara      0           0           0           
+            gampaha     minuwangoda galle       
+gampaha     0           12          100         
+minuwangoda 12          0           120         
+galle       100         120         0           
