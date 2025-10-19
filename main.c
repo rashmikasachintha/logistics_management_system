@@ -8,7 +8,7 @@
 char cities[MAXCITY][50];
 int distance[MAXCITY][MAXCITY];
 int citycount=0;
-char vehicleNames[3][10] = {"Van", "Truck", "Lorry"};
+char vehicleNames[3][10] = {"Van",  "Truck", "Lorry"};
 int deliveryCount=0;
 int bestPath[MAXCITY], tempPath[MAXCITY], visited[MAXCITY];
 int minDistance;
@@ -90,7 +90,7 @@ do {
         case 0:
             saveDistanceDataToTxtFile();
             saveDeliveryDataToTxtFile();
-            printf("Exiting...\n");
+            printf(" Exiting...\n");
             break;
          default:
             printf("Invalid choice.\n");
@@ -108,11 +108,12 @@ void addCity() {
     char city[50];
 
 
-    printf("Enter city names:-(if you want exit enter 0 )\n");
+    printf("\nEnter city names(if you want exit enter 0 ):-\n");
 
     while (citycount < MAXCITY) {
         printf("Enter city %d name: ", citycount + 1);
-        scanf("%s", city);  // Accepts names with spaces
+        scanf("%s", city);
+
 
         if (strcmp(city, "0") == 0) {
             printf("stopped.\n");
@@ -217,17 +218,17 @@ void distanceInput() {
 
 void displayDistance(){
     printf("\n--Distance Table--\n");
-    printf("\t");
+    printf("%12s"," ");
     for(int i=0;i<citycount;i++){
-        printf("%s\t",cities[i]);
+        printf("%12s",cities[i]);
     }
     printf("\n");
 
     for(int i=0;i<citycount;i++){
-        printf("%s\t",cities[i]);
+        printf("%12s",cities[i]);
         {
             for(int k=0;k<citycount;k++){
-                printf("%d\t",distance[i][k]);
+                printf("%12d",distance[i][k]);
             }
             printf("\n");
         }
@@ -235,6 +236,11 @@ void displayDistance(){
 
 }
 void DeliveryRequestHandling(){
+    if (deliveryCount >= MAXDELIVERY) {
+    printf("Maximum delivery limit reached.\n");
+    return;
+}
+
 
     displayCities();
     printf("Enter source city index:");
@@ -246,23 +252,30 @@ void DeliveryRequestHandling(){
         printf("source city and destination city should be defferent");
         return;
     }
+    if (source < 0 || source >= citycount || destination < 0 || destination >= citycount) {
+    printf("Invalid city index.\n");
+    return;
+}
+
+    printf("\n\tMax capacity(kg)\n");
+    printf("\tvan<=1000kg,truck<=5000kg,lorry<=10000kg\n\n");
     printf("Enter weight(in kg):");
     scanf("%d",&weight);
     printf("1=Van\n2=Truck\n3=Lorry\n");
     printf("Enter vehicle type(NO):");
     scanf("%d",&vehicletype);
 
-    int rateperkm[]={30,40,80};
-    int capacity[]={1000,5000,10000};
+    int rateperkm[]={ 30,40,80};
+    int capacity[]={1000,5000,10000 };
     int avgspeed[]={60,50,45};
     int fuelefficiency[]={12,6,4};
 
-    if(weight>capacity[vehicletype-1]){
+    if(weight > capacity[vehicletype-1]){
         printf("Weight exceed vehicle maximum capacity");
         return;
     }
     float d=(float)distance[source][destination];
-    float deliverycost=d*rateperkm[vehicletype-1]*(1+weight*(1.0/10000.0));
+    float deliverycost = d * rateperkm[vehicletype - 1] * (1 + (float)weight / 10000.0);
     float speed=(float)avgspeed[vehicletype-1];
     float deliverytime=d/speed;
     float fuelused=d/(float)fuelefficiency[vehicletype-1];
@@ -284,16 +297,22 @@ void DeliveryRequestHandling(){
     timedel[deliveryCount] = deliverytime;
 
 
-    printf("\n====Dilvery Cost Estimation====\n");
-    printf("From:%s\nTo:%s\nVehicle:%s\nWeight:%.2f kg\n",cities[sourcedel[deliveryCount]],cities[destinationdel[deliveryCount]],vehicleNames[vehicleTypedel[deliveryCount]],weightdel[deliveryCount]);
-    printf("Delivery Cost:%.2f\n",deliveryCostdel[deliveryCount]);
-    printf("Fuel Used:%.2f\n",fuelUseddel[deliveryCount]);
-    printf("Fuel Cost:%.2f\n",fuelCostdel[deliveryCount]);
-    printf("Total cost:%.2f\n",totalCostdel[deliveryCount]);
-    printf("Profit:%.2f\n",profitdel[deliveryCount]);
-    printf("Customer Charge:%.2f\n",customerChargedel[deliveryCount]);
-    printf("Estimated Time:%.2f\n",timedel[deliveryCount]);
-    printf("===============================================\n");
+    printf("\n======================================================\n");
+    printf("DELIVERY COST ESTIMATION\n------------------------------------------------------\n");
+    printf("From: %s\n", cities[source]);
+    printf("To: %s\n", cities[destination]);
+    printf("Minimum Distance: %.0f km\n", d);
+    printf("Vehicle: %s\n", vehicleNames[vehicletype-1]);
+    printf("Weight: %d kg\n", weight);
+    printf("------------------------------------------------------\n");
+    printf("Base Cost: %.2f LKR\n",deliverycost);
+    printf("Fuel Used: %.2f L\n", fuelused);
+    printf("Fuel Cost: %.2f LKR\n", fuelcost);
+    printf("Operational Cost: %.2f LKR\n", totalcost);
+    printf("Profit: %.2f LKR\n", profit);
+    printf("Customer Charge: %.2f LKR\n", finalcharge);
+    printf("Estimated Time: %.2f hours\n", deliverytime);
+    printf("======================================================\n");
 
     deliveryCount++;
 
@@ -368,15 +387,22 @@ void deliveryReports() {
         if (d > longest) longest = d;
         if (d < shortest) shortest = d;
     }
+    if (deliveryCount == 0) {
+    printf("\n--- Performance Report ---\n");
+    printf("No deliveries have been completed yet.\n");
+    printf("---------------------------\n");
+    return;
+}
+
 
     printf("\n--- Performance Report ---\n");
     printf("Total Deliveries Completed: %d\n", deliveryCount);
-    printf("Total Distance Covered: %.2f km\n", totalDistance);
-    printf("Average Delivery Time: %.2f hours\n", deliveryCount ? totalTime / deliveryCount : 0);
-    printf("Total Revenue: %.2f LKR\n", totalRevenue);
-    printf("Total Profit: %.2f LKR\n", totalProfit);
-    printf("Longest Route: %d km\n", longest);
-    printf("Shortest Route: %d km\n", shortest);
+    printf("Total Distance Covered    : %.2f km\n", totalDistance);
+    printf("Average Delivery Time     : %.2f hours\n", deliveryCount ? totalTime / deliveryCount : 0);
+    printf("Total Revenue             : %.2f LKR\n", totalRevenue);
+    printf("Total Profit              : %.2f LKR\n", totalProfit);
+    printf("Longest Route             : %d km\n", longest);
+    printf("Shortest Route            : %d km\n", shortest);
     printf("---------------------------\n");
 }
 void saveDistanceDataToTxtFile() {

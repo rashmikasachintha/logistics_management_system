@@ -1,3 +1,4 @@
-Delivery Count: 0
+Delivery Count: 1
 
 No   Source       Destination  Weight   Vehicle  BaseCost     FuelUsed     FuelCost     OperationalCost Profit       CustomerCharge   Time(hrs)   
+1    gampaha      minuwangoda  750      Van      387.00       1.00         310.00       697.00         174.25       871.25           0.20        

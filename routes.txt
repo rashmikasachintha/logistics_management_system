@@ -1,5 +1,6 @@
-City count: 2
+City count: 3
 
-            gampaha     minuwangoda 
-gampaha     12          100         
-minuwangoda 12          0           
+            gampaha     minuwangoda jaela       
+gampaha     0           12          20          
+minuwangoda 12          0           22          
+jaela       20          22          0           
