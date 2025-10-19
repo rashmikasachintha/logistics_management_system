@@ -30,10 +30,12 @@ void deliveryReports();
 void saveDistanceDataToTxtFile();
 void saveDeliveryDataToTxtFile();
 void loadDistanceDataFromTxtFile();
+void loadDeliveryDataFromTxtFile();
 
 
 int main(){
     loadDistanceDataFromTxtFile();
+    loadDeliveryDataFromTxtFile();
 
     int choice;
 do {
@@ -414,7 +416,7 @@ void saveDeliveryDataToTxtFile() {
 void loadDistanceDataFromTxtFile() {
     FILE *froute = fopen("routes.txt", "r");
     if (froute == NULL) {
-        printf("routes.txt not found. Starting fresh.\n");
+        printf("routes.txt not found. .\n");
         return;
     }
 
@@ -436,3 +438,52 @@ void loadDistanceDataFromTxtFile() {
 
     fclose(froute);
 }
+void loadDeliveryDataFromTxtFile() {
+    FILE *fdel = fopen("deliveries.txt", "r");
+    if (fdel == NULL) {
+        printf("File not found! \n");
+        return;
+    }
+
+
+    fscanf(fdel, "Delivery Count: %d", &deliveryCount);
+
+
+    char skipLine[256];
+    fgets(skipLine, sizeof(skipLine), fdel);
+    fgets(skipLine, sizeof(skipLine), fdel);
+
+
+    for (int i = 0; i < deliveryCount; i++) {
+        int number;
+        char source[50], destination[50], vehicle[10];
+
+
+        fscanf(fdel, "%d %s %s %d %s %f %f %f %f %f %f %f",
+               &number, source, destination, &weightdel[i], vehicle,
+               &deliveryCostdel[i], &fuelUseddel[i], &fuelCostdel[i],
+               &totalCostdel[i], &profitdel[i], &customerChargedel[i], &timedel[i]);
+
+
+        for (int j = 0; j < citycount; j++) {
+            if (strcmp(cities[j], source) == 0) {
+                sourcedel[i] = j;
+            }
+            if (strcmp(cities[j], destination) == 0) {
+                destinationdel[i] = j;
+            }
+        }
+
+
+        if (strcmp(vehicle, "Van") == 0) {
+            vehicleTypedel[i] = 1;
+        } else if (strcmp(vehicle, "Truck") == 0) {
+            vehicleTypedel[i] = 2;
+        } else {
+            vehicleTypedel[i] = 3;
+        }
+    }
+
+    fclose(fdel);
+}
+
