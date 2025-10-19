@@ -104,30 +104,45 @@ do {
 
     return 0;
 }
-void addCity(){
-    if(citycount >= MAXCITY){
-        printf("Reached to city limit\n");
-        return;
+void addCity() {
+    char city[50];
 
-    }
-    else{
-        char city[50];
-        printf("Enter city %d name:",citycount+1);
-        scanf("%s",city);
 
-        for(int i=0;i<citycount;i++){
-            if(strcmp(city,cities[i])==0){
-                printf("This city is already exist!\n");
-                return;
+    printf("Enter city names:-(if you want exit enter 0 )\n");
+
+    while (citycount < MAXCITY) {
+        printf("Enter city %d name: ", citycount + 1);
+        scanf("%s", city);  // Accepts names with spaces
+
+        if (strcmp(city, "0") == 0) {
+            printf("stopped.\n");
+            break;
+        }
+
+
+        int dupl = 0;
+        for (int i = 0; i < citycount; i++) {
+            if (strcmp(city, cities[i]) == 0) {
+                dupl = 1;
+                break;
             }
+        }
+
+        if (dupl) {
+            printf(" This city already exists.\n");
+        }
+        else {
+            strcpy(cities[citycount], city);
+            citycount++;
 
         }
-        strcpy(cities[citycount],city);
-       (citycount)++;
-
     }
 
+    if (citycount == MAXCITY) {
+        printf("Reached the city limit .\n");
+    }
 }
+
 void removeCity() {
     if (citycount == 0) {
         printf("No cities to remove.\n");

@@ -1,6 +1,5 @@
-City count: 3
+City count: 2
 
-            gampaha     minuwangoda galle       
-gampaha     0           12          100         
-minuwangoda 12          0           120         
-galle       100         120         0           
+            gampaha     minuwangoda 
+gampaha     12          100         
+minuwangoda 12          0           
